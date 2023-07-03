@@ -10,7 +10,7 @@ import UIKit
 
 open class ReNavigationController: UINavigationController {
     @ReNavigation.Completions var completions
-    
+
     @objc private var _delegate = Delegate()
 
     public override init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil) {
@@ -51,7 +51,9 @@ open class ReNavigationController: UINavigationController {
             super.responds(to: aSelector) || delegate?.responds(to: aSelector) ?? false
         }
 
-        func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+        func navigationController(_ navigationController: UINavigationController,
+                                  didShow viewController: UIViewController,
+                                  animated: Bool) {
             delegate?.navigationController?(navigationController, didShow: viewController, animated: animated)
             completions[viewController]?()
             completions[viewController] = nil

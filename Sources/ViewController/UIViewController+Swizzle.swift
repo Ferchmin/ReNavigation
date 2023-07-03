@@ -10,7 +10,7 @@ import UIKit
 
 var swizzle: Void = UIViewController.swizzleDidDisapear()
 
-//swizzle viewDidDissapear
+// swizzle viewDidDissapear
 private extension UIViewController {
     private struct AssociatedKeys {
         static var didDisapearClosureKey = "com.db.didDisapear"
@@ -32,7 +32,8 @@ private extension UIViewController {
             }
 
             if let implementation = implementation {
-                let viewDidAppear: ViewDidDisappearFunction = unsafeBitCast(implementation, to: ViewDidDisappearFunction.self)
+                let viewDidAppear: ViewDidDisappearFunction = unsafeBitCast(implementation,
+                                                                            to: ViewDidDisappearFunction.self)
                 viewDidAppear(calledViewController, selector, animated)
             }
 
@@ -54,4 +55,3 @@ private extension UIViewController {
         }
     }
 }
-

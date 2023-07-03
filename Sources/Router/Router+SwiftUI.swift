@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 @available(iOS 13.0, *)
-extension Router {
+extension ReNavigationRouter {
     public func showOnRoot<V>(view: @escaping @autoclosure () -> V,
                               animated: Bool = true,
                               navigationBarHidden: Bool = true) where V: View {

@@ -9,7 +9,7 @@ let package = Package(
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "ReNavigation",
-            targets: ["ReNavigation"]),
+            targets: ["ReNavigation"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -21,6 +21,6 @@ let package = Package(
         .target(
             name: "ReNavigation",
             dependencies: [],
-            path: "ReNavigation/Sources"),
+            path: "Sources")
     ]
 )

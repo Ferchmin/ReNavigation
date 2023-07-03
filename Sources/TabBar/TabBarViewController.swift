@@ -17,7 +17,7 @@ public protocol NavigationContainerController where Self: UIViewController {
 }
 
 class TabBarViewController: UITabBarController, NavigationContainerController {
-    @ReNavigation.Route private var router
+    @ReNavigation.Router private var router
 
     override open var childForStatusBarStyle: UIViewController? {
         currentNavigationController?.topViewController

@@ -9,7 +9,8 @@ import Foundation
 import UIKit
 
 public struct NavigationConfig {
-    public typealias TabBarItems<T> = (_ tabBar: UITabBar, _ items: [(item: T, uiTabBarItem: UITabBarItem)]) -> TabBarItemsResult
+    public typealias TabBarItems<T> = (_ tabBar: UITabBar,
+                                       _ items: [(item: T, uiTabBarItem: UITabBarItem)]) -> TabBarItemsResult
     public typealias CustomControls<T> = (_ tabBar: UITabBar, _ items: [T]) -> CustomControlsResult
     public typealias Custom<T> = (_ items: [T]) -> NavigationContainerController
 

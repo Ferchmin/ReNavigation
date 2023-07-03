@@ -15,7 +15,7 @@ final class NavigationDispatcher {
 
     private init() { }
 
-    func async(function: @escaping (@escaping ()-> Void) -> Void) {
+    func async(function: @escaping (@escaping () -> Void) -> Void) {
         routingQueue.async { [weak self] in
             DispatchQueue.main.async { [weak self] in
                 function {

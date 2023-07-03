@@ -9,8 +9,8 @@ import Foundation
 import UIKit
 import SwiftUI
 
-open class Router {
-    public typealias NavigationCompletions = [UIViewController: () -> Void]
+open class ReNavigationRouter {
+    typealias NavigationCompletions = [UIViewController: () -> Void]
 
     var uiState: UIState
     var completions: NavigationCompletions
@@ -24,8 +24,8 @@ open class Router {
     }
 
     open func showOnRoot(loader: ReNavigation.Loader,
-                           animated: Bool = true,
-                           navigationBarHidden: Bool = true) {
+                         animated: Bool = true,
+                         navigationBarHidden: Bool = true) {
         let uiState = self.uiState
 
         // dismiss modals
@@ -44,22 +44,20 @@ open class Router {
     }
 
     open func show<Item: NavigationItem>(on item: Item,
-                                           loader: ReNavigation.Loader,
-                                           animated: Bool = true,
-                                           navigationBarHidden: Bool = true,
-                                           resetStack: Bool = false) {
+                                         loader: ReNavigation.Loader,
+                                         animated: Bool = true,
+                                         navigationBarHidden: Bool = true,
+                                         resetStack: Bool = false) {
         let uiState = uiState
-
-        guard uiState.navigationContainerController?.selectedItem as? Item != item || resetStack else {
-            pop(mode: .popToRoot)
-            return
-        }
-
         let isTabBarOnTop = uiState.rootViewController is TabBarViewController
 
         let containerController: NavigationContainerController
         if isTabBarOnTop {
             containerController = uiState.rootViewController as! NavigationContainerController
+            if containerController.selectedItem as? Item == item || resetStack {
+                pop(mode: .popToRoot)
+                return
+            }
         } else {
             let config = uiState.config.navigationConfigs.first { $0.type is Item.Type }
             if case let .custom(configurator) = config?.config {
@@ -71,13 +69,12 @@ open class Router {
                 tabController.loadViewIfNeeded()
                 tabController.setup(items: config?.items ?? [])
                 containerController = tabController
-                uiState.navigationContainerController = tabController
             }
         }
 
         containerController.set(current: item)
 
-        //set up current if empty (or reset)
+        // set up current if empty (or reset)
         let topNavigationController = containerController
             .containers?
             .first { ($0.tabBarItem as? TabItem)?.navigationTab as? Item == item }
@@ -104,13 +101,13 @@ open class Router {
     }
 
     open func push(loader: ReNavigation.Loader,
-                     pop: PopMode? = nil,
-                     animated: Bool = true) {
+                   pop: PopMode? = nil,
+                   animated: Bool = true) {
         let uiState = self.uiState
         let controller = loader.load()
 
         NavigationDispatcher.main.async { completion in
-            //dismiss not needed modals
+            // dismiss not needed modals
             let number = uiState.modalControllers.count - uiState.modalControllers.reversed().drop { !$0.hasNavigation }.count
             uiState.dismiss(animated: animated,
                             number: number,
@@ -119,7 +116,7 @@ open class Router {
 
         NavigationDispatcher.main.async { completion in
             guard let navigationController = uiState.navigationController else {
-                assertionFailure("PushMiddleware: No navigation Controller")
+                assertionFailure("ReNavigationRouter: No navigation Controller")
                 return
             }
 
@@ -170,10 +167,10 @@ open class Router {
     }
 
     open func showModal(loader: ReNavigation.Loader,
-                          animated: Bool = true,
-                          withNavigationController: Bool = true,
-                          presentationStyle: UIModalPresentationStyle = .fullScreen,
-                          preferredCornerRadius: CGFloat? = nil) {
+                        animated: Bool = true,
+                        withNavigationController: Bool = true,
+                        presentationStyle: UIModalPresentationStyle = .fullScreen,
+                        preferredCornerRadius: CGFloat? = nil) {
         let uiState = self.uiState
         let viewController = loader.load()
 
@@ -220,5 +217,11 @@ open class Router {
                 uiState.dismiss(animated: animated, completion: completion)
             }
         }
+    }
+}
+
+private extension UIViewController {
+    var hasNavigation: Bool {
+        self is UINavigationController
     }
 }

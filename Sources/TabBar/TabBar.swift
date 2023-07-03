@@ -75,13 +75,12 @@ class TabBar: UITabBar {
     }
 
     override var selectedItem: UITabBarItem? {
+        get {
+            _selectedItem
+        }
         set {
             super.selectedItem = newValue
             _selectedItem = newValue
-        }
-
-        get {
-            _selectedItem
         }
     }
 }

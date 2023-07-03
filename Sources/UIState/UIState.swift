@@ -9,8 +9,6 @@ import Foundation
 import UIKit
 
 public final class UIState {
-    var navigationContainerController: NavigationContainerController?
-
     private let window: UIWindow
     private let uiStateMainController: ReNavigationController
 
@@ -83,11 +81,5 @@ public final class UIState {
 
     public func pop(animated: Bool, completion: @escaping () -> Void) {
         navigationController?.popViewController(animated: animated, completion: completion)
-    }
-}
-
-extension UIViewController {
-    var hasNavigation: Bool {
-        self is UINavigationController
     }
 }

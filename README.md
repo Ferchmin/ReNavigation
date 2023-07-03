@@ -22,6 +22,7 @@ Using the router is as simple as calling navigation methods:
                              animated: Bool = true,
                              navigationBarHidden: Bool = true,
                              resetStack: Bool = false)
+
 - push(loader: ReNavigation.Loader,
        pop: PopMode? = nil,
        animated: Bool = true)
